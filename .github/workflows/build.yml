@@ -27,8 +27,17 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Verify Flutter & Environment
-        run: flutter doctor -v
+      - name: Create Android project structure if missing
+        run: |
+          if [ ! -d "android" ]; then
+            flutter create . --org com.tutorflow.routine --platforms=android
+          fi
+
+      - name: Set Gradle Wrapper Execution Permission
+        run: |
+          if [ -f "android/gradlew" ]; then
+            chmod +x android/gradlew
+          fi
 
       - name: Install Dependencies
         run: flutter pub get
